@@ -1,5 +1,7 @@
 package com.example.demo.soap.service.rs;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.soap.vo.User;
 import io.swagger.annotations.Api;
 import org.springframework.stereotype.Service;
@@ -15,10 +17,10 @@ public class UserServiceImplRS implements UserServiceRS {
 		return user;
 	}
 	@Override
-	public User findUserByName(String name) {
+	public Object findUserByName(String name) {
 		User user = new User();
 		user.setId(name);
 		user.setName(name);
-		return user;
+		return JSONObject.toJSONString(user);
 	}
 }

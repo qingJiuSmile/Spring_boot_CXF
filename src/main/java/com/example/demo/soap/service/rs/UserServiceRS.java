@@ -18,5 +18,5 @@ public interface UserServiceRS {
 	@GET
 	@Path(value = "/search")
 	@Produces({"application/json","application/xml"})
-	User findUserByName(@QueryParam("name") String name);
+    Object findUserByName(@QueryParam("name") String name);
 }

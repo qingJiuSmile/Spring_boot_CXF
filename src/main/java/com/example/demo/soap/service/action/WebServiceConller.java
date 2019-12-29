@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.soap.vo.User;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/action")
+@Api(description = "webservice请求")
 public class WebServiceConller {
 
 
@@ -25,6 +28,7 @@ public class WebServiceConller {
     @Autowired
     private List<JacksonJaxbJsonProvider> jsonProvider;
     @PostMapping("/gotoService")
+    @ApiOperation(value = "jax-ws请求")
     public String gotoService(String name){
         JaxWsDynamicClientFactory dcf = JaxWsDynamicClientFactory.newInstance();
         Client client = dcf.createClient("http://localhost:8080/spring_demo/myWebservice/UserServiceWS?wsdl");
@@ -47,11 +51,13 @@ public class WebServiceConller {
     @PostMapping("/getRs")
     public List<User> getRs(String name){
         //调用webservice获取查询数据
-        User customer = WebClient
-                .create("http://localhost:8080/spring_demo/myWebservice/UserServiceRS/search?name=name"+name, jsonProvider)
-                .accept(MediaType.APPLICATION_JSON).get(User.class);
+        JSONObject customer = WebClient
+                .create("http://localhost:8080/spring_demo/myWebservice/UserServiceRS/search?name="+name, jsonProvider)
+                .accept(MediaType.APPLICATION_JSON).get(JSONObject.class);
+        System.out.println(customer.getString("name"));
+        System.out.println(customer.get("id"));
         List<User> ls = new ArrayList<>();
-        ls.add(customer);
+        ls.add(null);
         return ls;
     }
 }
