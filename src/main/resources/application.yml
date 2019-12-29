@@ -1,0 +1,8 @@
+server:
+  port: 8080
+  context-path: /spring_demo
+
+cxf:
+  jaxrs:
+    client:
+      address: http://localhost:${server.port}/${server.context-path}/services/customerServiceRS
